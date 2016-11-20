@@ -1,4 +1,5 @@
 import random
+
 #----- TRAINING -----#
 
 
@@ -9,7 +10,7 @@ class Perceptron:
 
     def random_weigths(self, n):
         #random n weights from 1 to 9
-        self.weights = random.sample(range(1, 10), n)
+        self.weights = random.sample(range(1, 100), n)
 
     def activation_function(self, value):
         #threshold
@@ -31,17 +32,39 @@ class Perceptron:
         error = expected_result - actual_result
         for i in range(len(self.weights)):
             self.weights += self.learning_rate * error * inputs[i]
+        return error
+
+#while(1):
+#    a = Perceptron()
+#    a.random_weigths(5)
+#    print(a.weights)
 
 
-#read training data set
-    #input
-    #output
+def main():
+    #Read data set
+    training_inputs = []
+    training_outputs = []
+    test_inputs = []
 
-while(1):
-    a = Perceptron()
-    a.random_weigths(5)
-    print(a.weights)
+    classify = Perceptron(0.05)
+    error = classify.training(training_inputs, training_outputs)
+    max_iterations = 2000
+    tolerance = 0.1
+    i = 0
+    while error > tolerance and i < max_iterations:
+        error = classify.training(training_inputs, training_outputs)
+        i += 1
 
+    test_inputs[0] = input("Age of patient at time of operation: ")
+    test_inputs[1] = input("Patient's year of operation: ")
+    test_inputs[2] = input("Number of positive axillary nodes detected: ")
+    aux_sum = classify.feed_forward(test_inputs)
+    output = classify.activation_function(aux_sum)
+    return output
+
+
+if __name__ == "__main__":
+    main()
 
 #----- TESTING -----#
 #read user input

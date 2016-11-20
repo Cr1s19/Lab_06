@@ -46,13 +46,13 @@ def main():
     training_outputs = []
     test_inputs = []
 
-    classify = Perceptron(0.05)
-    error = classify.training(training_inputs, training_outputs)
+    classify = Perceptron(0.5)
+    error = 10
     max_iterations = 2000
     tolerance = 0.1
     i = 0
     while error > tolerance and i < max_iterations:
-        error = classify.training(training_inputs, training_outputs)
+        error = classify.training(training_inputs[i], training_outputs[i])
         i += 1
 
     test_inputs[0] = input("Age of patient at time of operation: ")
