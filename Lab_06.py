@@ -6,6 +6,10 @@ import math
 def rand(a, b):
     return (b - a) * random.random() + a
 
+def sigmoid(x):
+    #return 1.0 / (1.0 + math.exp(-x))
+    return math.tanh(x)
+
 class Perceptron:
     def __init__(self, num_input, rate):
         self.weights = [0.0] * num_input
@@ -47,6 +51,7 @@ def main():
     #Read data set
     training_inputs = []
     training_outputs = []
+    testing_inputs = [0.0] * 4
 
     with open("data.in", "r") as infile:
         for line in infile:
@@ -60,13 +65,48 @@ def main():
     print(num)
 
     classify = Perceptron(4, 0.5)
+    error = 10
     max_iterations = 10000
     i = 0
-    while i < max_iterations:
+    while error > 0.0001 or i < 10000:
         error = classify.training(training_inputs[i%num], training_outputs[i%num])
-        i = i+1
+        i = i + 1
         print(error, i)
+
+    option = 'a'
+    while(option == 'a' or option == 'b'):
+        print("BANKNOTE AUTHENTICATION")
+        print("a. Select testing data from training data set")
+        print("b. Insert new data")
+        print("c. Exit")
+        option = input("Option? (a/b): ")
+
+        if(option == 'a'):
+            index = int(input("   Select the number (0 - %d): " % (num-1)))
+            if(index >= 0 and index < num):
+                print("     Variance of Wavelet Transfoerd image: %f" % (training_inputs[index][0]))
+                print("     Skewness of Wavelet Transformed image: %f" % (training_inputs[index][1]))
+                print("     Curtosis of Wavelet Transformed image: %f" % (training_inputs[index][2]))
+                print("     Entropy of image: %f" % (training_inputs[index][3]))
+                print()
+                aux_sum = classify.feed_forward(training_inputs[index])
+                output = classify.activation_function(aux_sum)
+                print("     Class: ", output)
+
+        elif(option == 'b'):
+            testing_inputs[0] = float(input("Variance of Wavelet Transfoerd image: "))
+            testing_inputs[1] = float(input("Skewness of Wavelet Transformed image: "))
+            testing_inputs[2] = float(input("Curtosis of Wavelet Transformed image: "))
+            testing_inputs[3] = float(input("Entropy of image: "))
+            print()
+            aux_sum = classify.feed_forward(testing_inputs)
+            output = classify.activation_function(aux_sum)
+            print("     Class: ", output)
+        print()
 
 
 if __name__ == "__main__":
     main()
+
+#----- TESTING -----#
+#read user input
