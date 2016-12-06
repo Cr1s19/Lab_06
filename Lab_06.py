@@ -39,7 +39,7 @@ class Perceptron:
 
     def training(self, inputs, expected_result):
         total_sum = self.feed_forward(inputs)
-        actual_result = self.activation_function(total_sum)
+        actual_result = self.activation_function (total_sum)
         #print("ac ", actual_result, "es ", expected_result)
         error = expected_result - actual_result
         for i in range(len(self.weights)):
@@ -53,7 +53,8 @@ def main():
     training_outputs = []
     testing_inputs = [0.0] * 4
 
-    with open("data.in", "r") as infile:
+    print("Perceptron")
+    with open("perceptron_dataSet2.txt", "r") as infile:
         for line in infile:
             ins = [float(x) for x in line.split(',')]
             training_outputs.append(ins.pop())
@@ -64,14 +65,20 @@ def main():
     num = len(training_inputs)
     print(num)
 
-    classify = Perceptron(4, 0.5)
-    error = 10
+    learning_rate = 1
     max_iterations = 10000
+    classify = Perceptron(4, learning_rate)
+
     i = 0
-    while error > 0.0001 or i < 10000:
+    while i < max_iterations:
         error = classify.training(training_inputs[i%num], training_outputs[i%num])
         i = i + 1
         print(error, i)
+
+    #for i in range(len(training_inputs)):
+        #ans = classify.feed_forward(training_inputs[i])
+        #ans2 = classify.activation_function(ans)
+        #print(ans2)
 
     option = 'a'
     while(option == 'a' or option == 'b'):
